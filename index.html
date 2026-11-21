@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RecoilX v1.1 — Touch Calibration & Visual HUD Utility | G.K Innovation</title>
+  <meta name="description" content="RecoilX v1.1 by G.K Innovation is an Android 10–16 screen sensitivity calibration and 100% pass-through visual HUD utility." />
+  <style>
+    :root {
+      --bg: #000000;
+      --card: #16181D;
+      --surface: #222630;
+      --border: #2A2F3B;
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --blue: #1E88E5;
+      --cyan: #38BDF8;
+      --emerald: #10B981;
+      --amber: #F59E0B;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #14171F;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.4px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+    }
+
+    .pill-emerald {
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 44px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.9rem, 5vw, 3.1rem);
+      line-height: 1.15;
+      font-weight: 800;
+      margin: 18px auto 16px;
+      max-width: 780px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      color: var(--cyan);
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      font-size: 1.02rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #FFFFFF;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .trust-strip {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 26px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* Sections */
+    section { padding: 44px 0; }
+
+    .section-head {
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #1E222B;
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* Pricing */
+    .currency-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .curr-btn {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .curr-btn.active {
+      background: var(--blue);
+      color: #FFFFFF;
+      border-color: var(--blue);
+    }
+
+    .price-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .price-card.featured {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: linear-gradient(180deg, #191E29 0%, #16181D 100%);
+    }
+
+    .price-amount {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 4px 0;
+    }
+
+    .price-sub {
+      font-size: 0.84rem;
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .feature-list li::before {
+      content: "✓ ";
+      color: var(--emerald);
+      font-weight: 800;
+    }
+
+    .note-box {
+      margin-top: 16px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #D1FAE5;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+    }
+
+    /* Policies */
+    .policy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .policy-item h3 {
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    /* Support */
+    .support-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .support-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-weight: 700;
+      font-size: 0.92rem;
+      word-break: break-all;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #14171F;
+      padding: 28px 0 44px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding: 44px 0 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span>RecoilX</span>
+        <span class="pill">v1.1</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#policies">Policies</a>
+        <a href="#support">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <span class="pill pill-emerald">Android 10–16 • 100% Pass-Through Visual Utility</span>
+      <h1>Screen Calibration &amp; <span>Visual HUD Utility</span> by G.K Innovation</h1>
+      <p>
+        RecoilX is a lightweight Android screen-calibration and visual training utility. Measure your touch drag speed with the 5-Swipe Sensitivity Lab, save personal visual layout presets, and train consistent hand mechanics with zero touch interference.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://t.me/RecoilXUpdates" target="_blank" rel="noopener">Get RecoilX v1.1 on Telegram</a>
+        <a class="btn btn-secondary" href="#pricing">View Subscription Plans</a>
+      </div>
+      <div class="trust-strip">
+        <span>✓ 3-Day Free Full Trial</span>
+        <span>✓ Sensitivity Lab Free Forever</span>
+        <span>✓ Instant In-App License Activation</span>
+        <span>✓ 1-Device Account Protection</span>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="section-head">
+        <h2>Built for Precision &amp; Device Safety</h2>
+        <p>Independent Android utility software engineered for clean ergonomics and reliable performance.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>5-Swipe Sensitivity Lab <span class="pill pill-emerald">FREE</span></h3>
+          <p>Calibrate touch responsiveness using five guided swipe samples to calculate repeatable sensitivity baselines tailored to your phone's screen DPI and touch speed.</p>
+        </div>
+        <div class="card">
+          <h3>100% Pass-Through Visual HUD <span class="pill">PRO</span></h3>
+          <p>Display customizable, non-blocking on-screen visual trajectory markers and layout anchors that pass 100% of touch gestures straight through to Android without modifying any third-party app.</p>
+        </div>
+        <div class="card">
+          <h3>Preset Vault &amp; Quick Hub <span class="pill">PRO</span></h3>
+          <p>Organize calibration profiles, switch between OLED Dark and Day modes, review calibration history logs, and redeem community promo codes directly inside Quick Hub.</p>
+        </div>
+        <div class="card">
+          <h3>Cloud-Verified Licensing <span class="pill">SECURE</span></h3>
+          <p>Instant account verification with 1-active-device binding, streamer-safe masked account details, and a 10-hour session grace window so brief mobile data drops never interrupt active sessions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="section-head">
+        <h2>Transparent Multi-Currency Pricing</h2>
+        <p>Choose your currency below. Subscriptions are purchased inside the RecoilX app and activate automatically upon payment confirmation.</p>
+      </div>
+
+      <div class="currency-bar" role="tablist" aria-label="Currency selector">
+        <button class="curr-btn active" data-curr="USD" type="button">USD ($)</button>
+        <button class="curr-btn" data-curr="NGN" type="button">NGN (₦)</button>
+        <button class="curr-btn" data-curr="INR" type="button">INR (₹)</button>
+        <button class="curr-btn" data-curr="GHS" type="button">GHS</button>
+        <button class="curr-btn" data-curr="KES" type="button">KES</button>
+      </div>
+
+      <div class="grid-3">
+        <div class="card price-card">
+          <div>
+            <h3>Monthly</h3>
+            <div class="price-amount" id="p-mo">$0.99</div>
+            <div class="price-sub">30 Days Full Pro Access</div>
+            <ul class="feature-list">
+              <li>Full Pass-Through Visual HUD</li>
+              <li>Custom Anchor &amp; Preset Vault</li>
+              <li>5-Swipe Sensitivity Lab</li>
+              <li>Instant Digital Activation</li>
+            </ul>
+          </div>
+          <a class="btn btn-secondary" href="#support">Subscribe via RecoilX App</a>
+        </div>
+
+        <div class="card price-card featured">
+          <div>
+            <h3>3 Months <span class="pill">POPULAR</span></h3>
+            <div class="price-amount" id="p-qtr">$2.49</div>
+            <div class="price-sub" id="s-qtr">90 Days • Save vs. Monthly</div>
+            <ul class="feature-list">
+              <li>Everything in Monthly Pro</li>
+              <li>90 Days Uninterrupted Access</li>
+              <li>1-Tap Device Transfer</li>
+              <li>Priority Update Releases</li>
+            </ul>
+          </div>
+          <a class="btn btn-primary" href="#support">Subscribe via RecoilX App</a>
+        </div>
+
+        <div class="card price-card">
+          <div>
+            <h3>Yearly <span class="pill pill-emerald">BEST VALUE</span></h3>
+            <div class="price-amount" id="p-yr">$6.99</div>
+            <div class="price-sub" id="s-yr">365 Days • Save Over 40%</div>
+            <ul class="feature-list">
+              <li>Everything in Monthly Pro</li>
+              <li>Full 12-Month Pro License</li>
+              <li>All Future v1.x Updates Included</li>
+              <li>Lowest Effective Monthly Rate</li>
+            </ul>
+          </div>
+          <a class="btn btn-secondary" href="#support">Subscribe via RecoilX App</a>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>Try Before You Pay:</strong> Every new device automatically receives a <strong>3-Day Free Full Trial</strong> upon signing up in the app. After the trial ends, the <strong>5-Swipe Sensitivity Lab remains free forever</strong>.
+      </div>
+    </section>
+
+    <!-- POLICIES (REQUIRED FOR PAYMENT GATEWAY KYC) -->
+    <section id="policies">
+      <div class="section-head">
+        <h2>Delivery, Refund &amp; Privacy Policies</h2>
+        <p>Clear terms governing digital software licenses issued by G.K Innovation.</p>
+      </div>
+      <div class="card policy-list">
+        <div class="policy-item">
+          <h3>1. Digital Delivery &amp; Activation</h3>
+          <p>RecoilX is a purely digital Android software utility. No physical goods are shipped. Upon successful payment via our authorized payment processors (Paystack or Flutterwave), Pro access is unlocked automatically on the buyer's registered account within seconds.</p>
+        </div>
+        <div class="policy-item">
+          <h3>2. Refund &amp; Billing Policy</h3>
+          <p>All new devices receive a 3-day full-feature free trial prior to purchase so users can verify compatibility with their Android device. Because digital Pro access is activated immediately upon confirmation, completed purchases are non-refundable except in verified cases of accidental duplicate billing or unactivated technical payment errors reported within 48 hours of the transaction. Plans are one-time term passes (30, 90, or 365 days) and do not silently auto-charge without user consent.</p>
+        </div>
+        <div class="policy-item">
+          <h3>3. Privacy &amp; Data Protection</h3>
+          <p>G.K Innovation collects only the account email address and an anonymized Android device identifier strictly to authenticate user sessions, enforce single-device licensing, and prevent trial abuse. Payment card and bank details are processed exclusively by PCI-DSS compliant payment gateways and are never stored on our servers. We never sell or rent user data to third parties.</p>
+        </div>
+        <div class="policy-item">
+          <h3>4. Software Disclaimer</h3>
+          <p>RecoilX is an independent screen calibration and visual overlay utility developed by G.K Innovation. It does not modify system memory, intercept network traffic, or alter third-party application files.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section id="support">
+      <div class="section-head">
+        <h2>Support &amp; Official Channels</h2>
+        <p>Need help with installation, calibration, or billing verification? Reach G.K Innovation through our official channels.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card support-card">
+          <h3>Official Telegram Channel</h3>
+          <p>APK release updates, changelogs, and official announcements.</p>
+          <a class="support-link" href="https://t.me/RecoilXUpdates" target="_blank" rel="noopener">https://t.me/RecoilXUpdates →</a>
+        </div>
+        <div class="card support-card">
+          <h3>TikTok Community Group</h3>
+          <p>Calibration showcases, tips, and community support.</p>
+          <a class="support-link" href="https://tiktok.me/group/ZSpE1sckb/" target="_blank" rel="noopener">https://tiktok.me/group/ZSpE1sckb/ →</a>
+        </div>
+        <!-- ADD YOUR SUPPORT EMAIL & YOUTUBE CARD HERE ONCE CREATED THIS WEEKEND:
+        <div class="card support-card">
+          <h3>Direct Email Support</h3>
+          <p>Billing inquiries and account assistance (24–48h response).</p>
+          <a class="support-link" href="mailto:YOUR_SUPPORT_EMAIL@gmail.com">YOUR_SUPPORT_EMAIL@gmail.com →</a>
+        </div>
+        -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>G.K Innovation</strong> • RecoilX v1.1 Screen Calibration &amp; Visual HUD Utility</p>
+      <p style="margin-top: 6px;">&copy; 2026 G.K Innovation. All rights reserved. Port Harcourt, Nigeria.</p>
+    </div>
+  </footer>
+
+  <script>
+    const PRICING = {
+      USD: { mo: "$0.99",  qtr: "$2.49",  yr: "$6.99",  sq: "90 Days • Save 16%", sy: "365 Days • Save 41%" },
+      NGN: { mo: "₦1,000", qtr: "₦2,400", yr: "₦6,900", sq: "90 Days • Save 20%", sy: "365 Days • Save 42%" },
+      INR: { mo: "₹69",    qtr: "₹169",   yr: "₹479",   sq: "90 Days • Save 18%", sy: "365 Days • Save 42%" },
+      GHS: { mo: "GHS 9",  qtr: "GHS 22", yr: "GHS 62", sq: "90 Days • Save 18%", sy: "365 Days • Save 42%" },
+      KES: { mo: "KES 99", qtr: "KES 240",yr: "KES 690",sq: "90 Days • Save 19%", sy: "365 Days • Save 42%" }
+    };
+
+    document.querySelectorAll(".curr-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".curr-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const p = PRICING[btn.dataset.curr];
+        document.getElementById("p-mo").textContent = p.mo;
+        document.getElementById("p-qtr").textContent = p.qtr;
+        document.getElementById("p-yr").textContent = p.yr;
+        document.getElementById("s-qtr").textContent = p.sq;
+        document.getElementById("s-yr").textContent = p.sy;
+      });
+    });
+  </script>
+</body>
+</html>
